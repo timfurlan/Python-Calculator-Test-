@@ -309,25 +309,13 @@ if st.sidebar.button('Run Projection'):
         final_year = min(2024,start_year  + 36)             #Final year is up to 36 years after start or 2024 (end of data)
         end_index = final_year - start_year + 1             #number of years of returns is inclusive of end and start
 
-        """
-        # Check the data types of the source columns
-        print(Return_History['Real Growth Return'].dtype)
-        print(Return_History['Real Defensive Return'].dtype)
-        """
         historical_slice = Return_History.loc[start_year:final_year,['Real Growth Return', 'Real Defensive Return']]
 
-        """
-        print(historical_slice.index)
-        """
         returns_subset = (
             historical_slice['Real Growth Return'] * growth_allocation +
             historical_slice['Real Defensive Return'] * (1 - growth_allocation)
         ).values
         returns[1:end_index] = returns_subset[0:end_index-1]        #0 is the first year of subset is the selected start, projection yses year + 1
-
-        """
-        print(returns)
-        """
 
     # Run actual projection with actual returns (and level income if selected)
     projection_df = calculate_projection(balance, returns,  growth_rate, start_age, years, drawdown_option, dynamic_option, target_drawdown,
